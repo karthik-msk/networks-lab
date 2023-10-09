@@ -47,20 +47,20 @@ int main() {
     printf("Server listening on port %d...\n", PORT);
 
     while (1) {
-    client_size = sizeof(client_addr);
-    if ((client_sock = accept(server_sock, (struct sockaddr*)&client_addr, (socklen_t*)&client_size)) < 0) {
-        perror("Accept failed");
-        exit(1);
-    }
-    printf("\nConnection accepted from %s:%d\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-    
-    recv(client_sock, request, sizeof(request), 0);
-    printf("\n\nReceived request:\n%s\n", request);
-    // Send a HTTP response
-    send_response(client_sock);
-    memset(request, '\0', sizeof(request)); 
-    printf("\nConnection Closed !!!\n-----------------------------------------\n");
-    close(client_sock);
+        client_size = sizeof(client_addr);
+        if ((client_sock = accept(server_sock, (struct sockaddr*)&client_addr, (socklen_t*)&client_size)) < 0) {
+            perror("Accept failed");
+            exit(1);
+        }
+        printf("\nConnection accepted from %s:%d\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+        
+        recv(client_sock, request, sizeof(request), 0);
+        printf("\n\nReceived request:\n%s\n", request);
+        // Send a HTTP response
+        send_response(client_sock);
+        memset(request, '\0', sizeof(request)); 
+        printf("\nConnection Closed !!!\n-----------------------------------------\n");
+        close(client_sock);
     }
 
     close(server_sock);
