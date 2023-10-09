@@ -59,7 +59,7 @@ int main() {
     // Send a HTTP response
     send_response(client_sock);
     memset(request, '\0', sizeof(request)); 
-    printf("Connection Closed !!!\n");
+    printf("\nConnection Closed !!!\n-----------------------------------------\n");
     close(client_sock);
     }
 
