@@ -17,7 +17,8 @@ int main() {
     memset(rbuf, '\0', sizeof(rbuf));
 
     // Create socket
-    if ((server_sock = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+    server_sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_sock < 0) {
         perror("Socket creation failed");
         exit(1);
     }
