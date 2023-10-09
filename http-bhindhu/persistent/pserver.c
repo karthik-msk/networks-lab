@@ -48,30 +48,28 @@ int main() {
     printf("Server listening on port %d...\n", PORT);
 
     while (1) {
-    client_size = sizeof(client_addr);
-    if ((client_sock = accept(server_sock, (struct sockaddr*)&client_addr, (socklen_t*)&client_size)) < 0) {
-        perror("Accept failed");
-        exit(1);
+        client_size = sizeof(client_addr);
+        if ((client_sock = accept(server_sock, (struct sockaddr*)&client_addr, (socklen_t*)&client_size)) < 0) {
+            perror("Accept failed");
+            exit(1);
+        }
+        //Receive number of requests
+        recv(client_sock, rbuf, sizeof(rbuf), 0);
+        sscanf(rbuf, "%d", &count);
+    
+        printf("\nConnection accepted from %s:%d\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+        printf("Number Of Requests = %d\n", count);
+    
+        for (int i = 1; i <= count; i++) {
+            recv(client_sock, request, sizeof(request), 0);
+            printf("\n\nReceived request %d:\n%s\n",i ,request);
+            // Send a HTTP response
+            send_response(client_sock, i);
+            memset(request, '\0', sizeof(request));
+        }
+        close(client_sock);
+        printf("\nConnection Closed !!!\n-----------------------------------------\n");
     }
-    //Receive number of requests
-    recv(client_sock, rbuf, sizeof(rbuf), 0);
-    sscanf(rbuf, "%d", &count);
-
-    printf("\nConnection accepted from %s:%d\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-    printf("Number Of Requests = %d\n", count);
-
-    for (int i = 1; i <= count; i++) {
-        recv(client_sock, request, sizeof(request), 0);
-        printf("\n\nReceived request %d:\n%s\n",i ,request);
-        // Send a HTTP response
-        send_response(client_sock, i);
-        memset(request, '\0', sizeof(request));
-    }
-    printf("\nConnection Closed !!!\n-----------------------------------------\n");
-    close(client_sock);
-    }
-
     close(server_sock);
-
     return 0;
 }
