@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
+#define IP "127.0.0.1"
 #define PORT 8080
 #define MAX_BUFFER_SIZE 1024
 
@@ -39,7 +40,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_addr.s_addr = inet_addr(IP);
     server_addr.sin_port = htons(PORT);
     
 
